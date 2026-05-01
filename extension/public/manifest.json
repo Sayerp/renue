@@ -1,0 +1,10 @@
+{
+  "manifest_version": 3,
+  "name": "Renue",
+  "version": "0.1.0",
+  "description": "Automated CE Tracker & Autofill Assistant",
+  "action": {
+    "default_popup": "index.html",
+    "default_title": "Open Renue"
+  }
+}
