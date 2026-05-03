@@ -47,7 +47,7 @@ function App() {
   };
 
   return (
-    <div style={{ padding: '20px', fontFamily: 'sans-serif', maxWidth: '600px', margin: '0 auto' }}>
+    <div style={{ width: '400px', minHeight: '550px', padding: '20px', fontFamily: 'sans-serif', boxSizing: 'border-box' }}>
       <h1>Renue Prototype</h1>
       <p>Upload a CE Certificate (PDF) to extract data.</p>
       
