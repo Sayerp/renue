@@ -5,3 +5,6 @@ pymupdf
 openai
 python-dotenv
 cryptography
+sqlalchemy
+psycopg2-binary
+python-dotenv
