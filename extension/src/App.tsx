@@ -4,14 +4,16 @@ import './App.css'
 function App() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-  const [result, setResult] = useState<any>(null);
+//   const [result, setResult] = useState<any>(null);
+  const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
       setError(null);
-      setResult(null);
+    //   setResult(null);
+    setStatusMessage(null);
     }
   };
 
@@ -23,6 +25,7 @@ function App() {
 
     setLoading(true);
     setError(null);
+    setStatusMessage(null);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -38,7 +41,13 @@ function App() {
       }
 
       const data = await response.json();
-      setResult(data.data);
+    //   setResult(data.data);
+      if (data.status === "queued") {
+        setStatusMessage(data.message);
+    } else {
+        setStatusMessage("Task started successfully.");
+    }
+
     } catch (err: any) {
       setError(err.message || "Something went wrong during extraction.");
     } finally {
@@ -74,14 +83,21 @@ function App() {
         </div>
       )}
 
-      {result && (
+      {/* {result && (
         <div style={{ marginTop: '20px', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
           <h3>Extraction Success!</h3>
           <pre style={{ textAlign: 'left', whiteSpace: 'pre-wrap' }}>
             {JSON.stringify(result, null, 2)}
           </pre>
         </div>
-      )}
+      )} */}
+
+      {statusMessage && (
+        <div style={{ marginTop: '20px', padding: '15px', background: '#e8f5e9', border: '1px solid #4caf50', borderRadius: '8px', color: '#2e7d32' }}>
+            <h3 style={{ marginTop: 0 }}>Upload Successful!</h3>
+            <p style={{ margin: 0 }}>{statusMessage}</p>
+            </div>
+        )}
     </div>
   )
 }
