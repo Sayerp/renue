@@ -4,7 +4,6 @@ import './App.css'
 function App() {
   const [file, setFile] = useState<File | null>(null);
   const [loading, setLoading] = useState(false);
-//   const [result, setResult] = useState<any>(null);
   const [statusMessage, setStatusMessage] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -12,7 +11,6 @@ function App() {
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
       setError(null);
-    //   setResult(null);
     setStatusMessage(null);
     }
   };
@@ -41,7 +39,6 @@ function App() {
       }
 
       const data = await response.json();
-    //   setResult(data.data);
       if (data.status === "queued") {
         setStatusMessage(data.message);
     } else {
@@ -82,15 +79,6 @@ function App() {
           <strong>Error:</strong> {error}
         </div>
       )}
-
-      {/* {result && (
-        <div style={{ marginTop: '20px', padding: '15px', background: '#f5f5f5', borderRadius: '8px' }}>
-          <h3>Extraction Success!</h3>
-          <pre style={{ textAlign: 'left', whiteSpace: 'pre-wrap' }}>
-            {JSON.stringify(result, null, 2)}
-          </pre>
-        </div>
-      )} */}
 
       {statusMessage && (
         <div style={{ marginTop: '20px', padding: '15px', background: '#e8f5e9', border: '1px solid #4caf50', borderRadius: '8px', color: '#2e7d32' }}>

@@ -61,31 +61,3 @@ async def extract_certificate(background_tasks: BackgroundTasks, file: UploadFil
         "status": "queued",
         "message": "Certificate received! Processing and saving to database in the background."
     }
-
-    # try:
-    #     content = await file.read()
-
-    #     data = await pdf_service.extract_certificate(content)
-
-    #     db_cert = Certificate(
-    #         provider = data.get("provider"),
-    #         course_name = data.get("course_name"),
-    #         completion_date = data.get("date"),
-    #         credits = data.get("credits")
-    #     )
-
-    #     db.add(db_cert)
-    #     db.commit()
-    #     db.refresh(db_cert)
-
-    #     return {
-    #         "status": "success",
-    #         "data": data,
-    #         "db_id": str(db_cert.id)
-    #     }
-    
-    # except json.JSONDecodeError:
-    #     raise HTTPException(status_code=500, detail="AI returned invalid JSON format.")
-    # except Exception as e:
-    #     db.rollback()
-    #     raise HTTPException(status_code=500, detail=str(e))
