@@ -3,7 +3,6 @@ uvicorn
 python-multipart
 pymupdf
 openai
-python-dotenv
 cryptography
 sqlalchemy
 psycopg2-binary
