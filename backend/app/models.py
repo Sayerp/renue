@@ -9,6 +9,7 @@ class Certificate(Base):
 
     id = Column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4)
     created_at = Column(DateTime(timezone=True), server_default=func.now())
+    user_id = Column(UUID(as_uuid=True), index=True, nullable=False)
     provider = Column(String, index=True)
     course_name = Column(String)
     completion_date = Column(String) # String for v0, update to date with error handling in v1
