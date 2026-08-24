@@ -75,3 +75,27 @@ async def extract_certificate(
     background_tasks.add_task(process_pdf_in_background, job.id, user_id, content)
 
     return {"job_id": job.id, "status": job.status}
+
+@app.get("/api/v1/jobs/{job_id}")
+async def get_job_status(job_id: uuid.UUID, user_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    user_id = uuid.UUID(user_id)
+    job = db.get(ExtractionJob, job_id)
+
+    if not job or job.user_id != user_id:
+        raise HTTPException(status_code=404, detail="Job not found.")
+
+    response = {"job_id": job.id, "status": job.status}
+
+    if job.status == "completed":
+        certificate = db.get(Certificate, job.certificate_id)
+        response["certificate"] = {
+            "id": certificate.id,
+            "provider": certificate.provider,
+            "course_name": certificate.course_name,
+            "completion_date": certificate.completion_date,
+            "credits": certificate.credits,
+        }
+    elif job.status == "failed":
+        response["error"] = job.error_message
+
+    return response
