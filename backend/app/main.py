@@ -99,3 +99,19 @@ async def get_job_status(job_id: uuid.UUID, user_id: str = Depends(get_current_u
         response["error"] = job.error_message
 
     return response
+
+@app.get("/api/v1/certificates")
+async def list_certificates(user_id: str = Depends(get_current_user_id), db: Session = Depends(get_db)):
+    user_id = uuid.UUID(user_id)
+    certificates = db.query(Certificate).filter(Certificate.user_id == user_id).all()
+
+    return [
+        {
+            "id": cert.id,
+            "provider": cert.provider,
+            "course_name": cert.course_name,
+            "completion_date": cert.completion_date,
+            "credits": cert.credits,
+        }
+        for cert in certificates
+    ]
