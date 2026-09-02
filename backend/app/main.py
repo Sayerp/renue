@@ -1,6 +1,8 @@
 from fastapi import FastAPI, UploadFile, File, HTTPException, Depends, BackgroundTasks
 from fastapi.middleware.cors import CORSMiddleware
 from app.services.pdf_service import PdfService
+from pydantic import BaseModel
+from typing import Optional
 import os
 import uuid
 from dotenv import load_dotenv
@@ -22,6 +24,12 @@ allow_headers=["*"],
 )
 
 pdf_service = PdfService(openai_api_key=os.getenv("OPENAI_API_KEY"))
+
+class CertificateUpdate(BaseModel):
+    provider: Optional[str] = None
+    course_name: Optional[str] = None
+    completion_date: Optional[str] = None
+    credits: Optional[float] = None
 
 async def process_pdf_in_background(job_id: uuid.UUID, user_id: uuid.UUID, content: bytes):
     db = SessionLocal()
