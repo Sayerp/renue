@@ -123,3 +123,30 @@ async def list_certificates(user_id: str = Depends(get_current_user_id), db: Ses
         }
         for cert in certificates
     ]
+
+@app.patch("/api/v1/certificates/{certificate_id}")
+async def update_certificate(
+    certificate_id: uuid.UUID,
+    updates: CertificateUpdate,
+    user_id: str = Depends(get_current_user_id),
+    db: Session = Depends(get_db)
+):
+    user_id = uuid.UUID(user_id)
+    certificate = db.get(Certificate, certificate_id)
+
+    if not certificate or certificate.user_id != user_id:
+        raise HTTPException(status_code=404, detail="Certificate not found.")
+
+    for field, value in updates.model_dump(exclude_unset=True).items():
+        setattr(certificate, field, value)
+
+    db.commit()
+    db.refresh(certificate)
+
+    return {
+        "id": certificate.id,
+        "provider": certificate.provider,
+        "course_name": certificate.course_name,
+        "completion_date": certificate.completion_date,
+        "credits": certificate.credits,
+    }
